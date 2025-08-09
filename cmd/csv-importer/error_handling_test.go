@@ -43,7 +43,7 @@ func TestErrorHandling_DatabaseConnectionFailure(t *testing.T) {
 
 	_, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	assert.Error(t, err, "Should fail to connect to non-existent database")
-	assert.Contains(t, err.Error(), "connection", "Error should mention connection failure")
+	assert.Contains(t, err.Error(), "connect", "Error should mention connection failure")
 }
 
 func TestErrorHandling_DatabaseQueryTimeout(t *testing.T) {

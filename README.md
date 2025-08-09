@@ -247,15 +247,16 @@ INTEGRATION_TEST=1 go test -v ./cmd/csv-importer/ -run TestIntegration_DatabaseO
 #### Performance Benchmarks
 
 ```bash
-# Run all benchmarks
-go test -bench=. ./cmd/csv-importer/
+# Run all benchmarks (skip regular tests)
+go test -bench=. -run=^$ ./cmd/csv-importer/
 
 # Run specific benchmarks
-go test -bench=BenchmarkRepository ./cmd/csv-importer/
-go test -bench=BenchmarkCSV ./cmd/csv-importer/
+go test -bench=BenchmarkRepository -run=^$ ./cmd/csv-importer/
+go test -bench=BenchmarkCSV -run=^$ ./cmd/csv-importer/
+go test -bench=BenchmarkIntegration -run=^$ ./cmd/csv-importer/
 
 # Run benchmarks with memory profiling
-go test -bench=. -benchmem ./cmd/csv-importer/
+go test -bench=. -benchmem -run=^$ ./cmd/csv-importer/
 ```
 
 #### Test with Race Detection
