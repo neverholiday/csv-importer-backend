@@ -189,15 +189,36 @@ The project includes a comprehensive test suite covering multiple aspects:
 ### Running Tests
 
 #### Run All Tests
+
+**Option 1: Unit Tests Only (No Database Required)**
 ```bash
-# Execute complete test suite
-go test -v ./cmd/csv-importer/
+# Execute unit tests (CSV, Security, Config, Error Handling)
+go test -v ./cmd/csv-importer/ -run="^Test(CSV|Security|EnvCfg|ErrorHandling)" -skip="Database"
 
-# Run tests with coverage
-go test -cover ./cmd/csv-importer/
+# Run unit tests with coverage
+go test -cover ./cmd/csv-importer/ -run="^Test(CSV|Security|EnvCfg|ErrorHandling)" -skip="Database"
 
-# Generate coverage report
-go test -coverprofile=coverage.out ./cmd/csv-importer/
+# Generate coverage report (unit tests)
+go test -coverprofile=coverage.out ./cmd/csv-importer/ -run="^Test(CSV|Security|EnvCfg|ErrorHandling)" -skip="Database"
+go tool cover -html=coverage.out
+```
+
+**Option 2: All Tests with Database**
+```bash
+# Start PostgreSQL database
+docker compose up -d
+
+# Load environment variables
+export $(grep -v '^#' .env | xargs)
+
+# Run complete test suite
+INTEGRATION_TEST=1 go test -v ./cmd/csv-importer/
+
+# Run with coverage (includes integration tests)
+INTEGRATION_TEST=1 go test -cover ./cmd/csv-importer/
+
+# Generate coverage report (all tests)
+INTEGRATION_TEST=1 go test -coverprofile=coverage.out ./cmd/csv-importer/
 go tool cover -html=coverage.out
 ```
 
